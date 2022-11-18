@@ -23,7 +23,10 @@ class UserBase(BaseModel):
         min_length=3,
         max_length=50
     )
-
+    numero_telefono: int = Field(
+        ...,
+        example="3104111213"
+    )
 
 class User(UserBase):
     id: int = Field(...
