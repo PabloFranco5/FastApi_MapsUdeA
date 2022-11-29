@@ -4,7 +4,7 @@ Esta clase extiende de peewee.Model y en ella declaramos los campos que vamos a 
 
 Después añadimos la clase Meta dentro de la clase User que contendrá la conexión a la base de datos.
 
-
+Hola
 
 
 # Explicacion viaje_model.py 
