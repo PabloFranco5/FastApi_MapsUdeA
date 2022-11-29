@@ -1,6 +1,8 @@
 
 # Modelo Entidad Relación.
  
+El modelo entidad relación que se maneja en la base de datos es:
+
  
 # Diagramas de procesos.
 Las APIs de Geolocalización son capaces de integrar el sistema de tu empresa con plataformas de mapas como Google Maps o para este caso en específico la 
@@ -91,17 +93,6 @@ Se realiza un proceso análogo para solicitar información del proveedor del cli
 autenticar nuestra aplicación con la API de WTTR. Se define el punto de destino como la ubicación de interés. Se crea una función que ejecute las acciones 
 requeridas. Dentro de dicha estructura se definen las rutas o direcciones de las características de interés a extraer, como la duración del viaje, la distancia 
 entre las dos ubicaciones seleccionadas y las indicaciones del trayecto para ser visualizadas por el usuario. 
-
- 
- 
-Explicacion user_model.py
-Esta clase extiende de peewee.Model y en ella declaramos los campos que vamos a necesitar que será un email, username los puntos de partida y llegada del usuario. El id no es necesario definirlo, ya que peewee se encargará de crearlo automáticamente como clave primaria y autoincrement.
-Después añadimos la clase Meta dentro de la clase User que contendrá la conexión a la base de datos.
-
-
-Explicacion viaje_model.py
-CAMBIAR EXPLICACION
-En este caso tendremos cuatro columnas (más el id que se genera automáticamente). El campo title será una breve descripción de la tarea a realizar, created_at será la fecha de creación, un booleano llamado is_done para indicar si la tarea ya ha sido realizada o no que por defecto se guardará como false y una clave foránea user para indicar a que usuario corresponde el todo. Esto guardará en la base de datos como un campo llamado user_id.
 
 IMG
 
