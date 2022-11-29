@@ -3,6 +3,44 @@
  
 El modelo entidad relación que se maneja en la base de datos es:
 
+IMG del modelo entidad relación.
+
+## Interpretación del modelo entidad-relación, tablas dominio y tablas de dimensiones.
+
+Recordemos que una entidad es un objeto o concepto del mundo real que se define en una base de datos, para este ejemplo práctico las entidades hacen referencia a  clientes, trayectorias y climas. Note que estas entidades se desprenden de la necesidad de responder las preguntas planteadas anteriormente. A continuación, explicaremos la creación de cada tabla utilizada en el modelo:
+
+
+### Tabla Cliente: 
+Nace de la necesidad de conocer datos referentes al cliente que está buscando acceder a la información, con esta información se puede realziar análisis posteriores sobre el comportamiento y necesidades genrales y especificas que presentan los usuarios.
+
+
+### Tabla Trayectorias: 
+Nace de la necesidad de conocer las trayectorias que cada usuario pretende conocer, el lugar de origen o de partida del gps y lugar de llegada de la persona.
+
+
+### Tabla clima: 
+Esta tabla nace de la necesidad de obtener información sobre las particularidades del clima deel ugar de destino.
+
+
+### RELACIONES: Esta parte hay que cambiarla. con las tablas nuevas de resto todo listo :)
+Muchos a Muchos (M/M o N/N)
+TABLA PRODUCTO --- TABLA VENTA: 
+Dichas entidades se relacionan (M/M) ya que una venta PUEDE contar con varios productos y un producto PUEDE venderse muchas veces
+Uno a Muchos (1/M o 1/N)
+TABLA CLIENTE --- TABLA PRODUCTO-VENTA: 
+Notamos que la relación que existe en estas tablas es de (1/M) ya que un solo cliente PUEDE realizar varias compras, pero una compra o venta solo ESTÁ a nombre de una sola persona o cliente.
+
+TABLA CLIENTE --- TABLA TIENDA: 
+La relación de estas tablas es igualmente (1/M) ya que un cliente puede COMPRAR en varias tiendas, pero varias compras en varias tiendas solo pueden APLICARSE a un solo cliente (esto porque la venta está a nombre de una sola persona no de muchas).
+
+TABLA TIENDA --- TABLA PAÍS: 
+La relación de estas tablas es (1/M) ya que un país PUEDE tener varias tiendas o sucursales, pero una sucursal no puede estar en varios países al mismo tiempo.
+
+TABLA TIENDA --- TABLA VENTA: 
+La relación de estas tablas es de (1/M) ya que una tienda puede REALIZAR varias ventas, pero las ventas realizadas solo pueden hacerse en una sucursal, es decir, al realizarse una venta esta solo se realiza en una sola sucursal o tienda y no en muchas.
+
+Para finalizar, La tabla de dominio es la tabla cliente-trayectoria (la tabla principal del modelo) y las tablas de dimensión serán la tabla clima (se unen a la tabla principal a través de FK). (ver imagen adjunta en el documento para comprender la relación).
+
  
 # Diagramas de procesos.
 Las APIs de Geolocalización son capaces de integrar el sistema de tu empresa con plataformas de mapas como Google Maps o para este caso en específico la 
