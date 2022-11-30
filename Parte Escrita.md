@@ -15,7 +15,7 @@ Recordemos que una entidad es un objeto o concepto del mundo real que se define 
 Nace de la necesidad de conocer datos referentes al cliente que está buscando acceder a la información, con esta información se puede realziar análisis posteriores sobre el comportamiento y necesidades genrales y especificas que presentan los usuarios.
 
 
-### Tabla Trayectorias: 
+### Tabla Trayecto: 
 Nace de la necesidad de conocer las trayectorias que cada usuario pretende conocer, el lugar de origen o de partida del gps y lugar de llegada de la persona.
 
 
