@@ -1,4 +1,4 @@
-# Explicacion funciones.py
+# Explicación funciones.py
 
 Selección de las librerías para extracción de información de la web: La librería urllib permite acceder a cualquier recurso alojado en Internet indicado mediante una dirección web. Por su parte, la librería requests facilita el trabajo con peticiones HTTP; particularmente permitirá hacer uso del método GET para extraer información de la URL dada.
 
@@ -6,7 +6,7 @@ Del proveedor de información seleccionado, en este caso, Mapquest (brinda  info
 
 Se define un punto de origen y un punto de destino de la ruta que posteriormente se va a indicar por el usuario para construir la dirección URL con la que se van a obtener todos los datos provenientes de API Mapquest para esos puntos de origen y destino.
 
-Se hace uso del método GET de la librería requests para extraer toda información de Mapquest referente a los datos especificados y se reescriben en formato JSON.
+Se hace uso del método GET de la librería requests para extraer toda información de Mapquest referente a los datos especificados y se reescriben en formato JSON. 
 
 Del archivo JSON se obtiene la ruta para determinar el valor de statuscode que indica el éxito de la ejecución de la petición. 
 

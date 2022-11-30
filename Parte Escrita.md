@@ -1,4 +1,3 @@
-
 # Modelo Entidad Relación.
  
 El modelo entidad relación que se maneja en la base de datos es:
@@ -134,4 +133,5 @@ requeridas. Dentro de dicha estructura se definen las rutas o direcciones de las
 entre las dos ubicaciones seleccionadas y las indicaciones del trayecto para ser visualizadas por el usuario. 
 
 IMG
+
 
