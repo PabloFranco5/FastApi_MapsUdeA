@@ -1,48 +1,42 @@
-# Modelo Entidad Relación.
+# 1. MODELO ENTIDAD RELACIÓN
+
+Recordemos que una entidad es un objeto o concepto del mundo real que se define en una base de datos, para este ejemplo práctico las entidades hacen referencia a  clientes, trayectorias y climas. Note que estas entidades se desprenden de la necesidad de responder las preguntas planteadas posteriormente. A continuación se presentará gráficamente el modelo entidad-relación y se realizará su respectiva interpretación.
  
-El modelo entidad relación que se maneja en la base de datos es:
+IMG 1
 
-IMG del modelo entidad relación.
-Imagen
+# TABLA USUARIO: 
 
-## Interpretación del modelo entidad-relación, tablas dominio y tablas de dimensiones.
+La tabla USUARIO surge de la necesidad de conocer datos referentes al cliente que está buscando acceder a la información, con esta información se puede realizar análisis posteriores sobre el comportamiento y necesidades generales y específicas que presentan los usuarios.
 
-Recordemos que una entidad es un objeto o concepto del mundo real que se define en una base de datos, para este ejemplo práctico las entidades hacen referencia a  clientes, trayectorias y climas. Note que estas entidades se desprenden de la necesidad de responder las preguntas planteadas anteriormente. A continuación, explicaremos la creación de cada tabla utilizada en el modelo:
+# TABLA TRAYECTO: 
 
-
-### Tabla Cliente: 
-Nace de la necesidad de conocer datos referentes al cliente que está buscando acceder a la información, con esta información se puede realziar análisis posteriores sobre el comportamiento y necesidades genrales y especificas que presentan los usuarios.
-
-
-### Tabla Trayecto: 
-Nace de la necesidad de conocer las trayectorias que cada usuario pretende conocer, el lugar de origen o de partida del gps y lugar de llegada de la persona.
-
-
-### Tabla clima: 
-Esta tabla nace de la necesidad de obtener información sobre las particularidades del clima deel ugar de destino.
-
-
-### RELACIONES: Esta parte hay que cambiarla. con las tablas nuevas de resto todo listo :)
-Muchos a Muchos (M/M o N/N)
-TABLA PRODUCTO --- TABLA VENTA: 
-Dichas entidades se relacionan (M/M) ya que una venta PUEDE contar con varios productos y un producto PUEDE venderse muchas veces
-Uno a Muchos (1/M o 1/N)
-TABLA CLIENTE --- TABLA PRODUCTO-VENTA: 
-Notamos que la relación que existe en estas tablas es de (1/M) ya que un solo cliente PUEDE realizar varias compras, pero una compra o venta solo ESTÁ a nombre de una sola persona o cliente.
-
-TABLA CLIENTE --- TABLA TIENDA: 
-La relación de estas tablas es igualmente (1/M) ya que un cliente puede COMPRAR en varias tiendas, pero varias compras en varias tiendas solo pueden APLICARSE a un solo cliente (esto porque la venta está a nombre de una sola persona no de muchas).
-
-TABLA TIENDA --- TABLA PAÍS: 
-La relación de estas tablas es (1/M) ya que un país PUEDE tener varias tiendas o sucursales, pero una sucursal no puede estar en varios países al mismo tiempo.
-
-TABLA TIENDA --- TABLA VENTA: 
-La relación de estas tablas es de (1/M) ya que una tienda puede REALIZAR varias ventas, pero las ventas realizadas solo pueden hacerse en una sucursal, es decir, al realizarse una venta esta solo se realiza en una sola sucursal o tienda y no en muchas.
-
-Para finalizar, La tabla de dominio es la tabla cliente-trayectoria (la tabla principal del modelo) y las tablas de dimensión serán la tabla clima (se unen a la tabla principal a través de FK). (ver imagen adjunta en el documento para comprender la relación).
-
+La tabla TRAYECTO surge de la necesidad de conocer las trayectorias que cada usuario pretende conocer, la ubicación de origen y de destino, el tiempo de trayecto y la distancia recorrida, así como la fecha en la que el usuario realizó la respectiva solicitud de información a la API. 
  
-# Diagramas de procesos.
+# TABLA CLIMA: 
+
+Esta tabla surge de la necesidad de obtener información sobre las particularidades del clima de la ubicación de destino.
+
+
+# RELACIONES ENTRE ENTIDADES 
+ 
+
+# USUARIO - TRAYECTO: 
+
+Estas dos entidades tienen una relación (M/M: muchos a muchos) ya que un usuario puede realizar muchas consultas acerca de diferentes trayectos y un trayecto tiene la posibilidad de ser consultado por muchas personas.
+ 
+# TRAYECTO - CLIMA:
+
+Estas dos entidades tienen una relación (M/M: muchos a muchos) ya que un trayecto puede arrojar diferentes descripciones para el clima de la ubicación de destino dependiendo del momento en que este sea consultado y una descripción del clima tiene la posibilidad de coincidir para diferentes trayectos.
+ 
+# USUARIO - CLIMA:
+
+Estas dos entidades tienen una relación (M/M: muchos a muchos) ya que un usuario puede realizar consultas acerca del clima de diferentes ubicaciones de destino y una descripción del clima tiene la posibilidad de coincidir en las solicitudes de diferentes usuarios.
+
+
+La tabla de dominio es la tabla USUARIO-TRAYECTO (la tabla principal del modelo) y la tabla de dimensión es la tabla CLIMA (se une a la tabla principal a través de FK). (ver imagen adjunta en el documento para comprender la relación).
+
+# 2. DIAGRAMA DE PROCESOS 
+
 Las APIs de Geolocalización son capaces de integrar el sistema de tu empresa con plataformas de mapas como Google Maps o para este caso en específico la 
 plataforma de Mapquest.
 
@@ -90,48 +84,94 @@ tiempo de ejecución y aumentar la rentabilidad de las operaciones.
 IMAGEN
  
 
-# Planteamiento del problema. 
-El desarrollo de la API de GPS pretende, en primera instancia, proporcionar datos de geolocalización, previamente solicitados al proveedor de GPS (Mapquest), 
-que faciliten la identificación de características de interés acerca de rutas definidas por el usuario. Mediante la indicación de un punto de origen y un punto 
-de destino, la API extrae una serie de atributos en formato .json que permiten identificar la ruta de acceso a las características de interés. La API de GPS 
-facilitará al usuario información sobre la duración del viaje, la distancia en kilómetros desde el punto de origen al punto de destino, la velocidad promedio, 
-la cantidad aproximada de litros de gasolina necesarios para realizar el recorrido, y las indicaciones durante el recorrido.
+# Planteamiento del problema.
+
+El Sistema de Posicionamiento Global (GPS) proporciona servicios fiables de posicionamiento, navegación y cronometría gratuita e ininterrumpidamente a usuarios en todo el mundo. El sistema proporcionará localización y hora exacta en cualquier condición atmosférica, en cualquier lugar del mundo y sin límite al número de usuarios simultáneos. 
+
+Hoy en día están al alcance de todos en el mercado los pequeños receptores del GPS portátiles. Con esos receptores, el usuario puede determinar con exactitud su ubicación y desplazarse fácilmente al lugar a donde desea trasladarse, ya sea caminando, conduciendo, volando o navegando. El GPS es indispensable en todos los sistemas de transporte del mundo ya que sirve de apoyo a la navegación aérea, terrestre y marítima. Los servicios de emergencia y socorro en casos de desastre dependen del GPS para la localización y coordinación horaria de misiones para salvar vidas. Actividades cotidianas como operaciones bancarias, de telefonía móvil e incluso de las redes de distribución eléctrica, ganan en eficiencia gracias a la exactitud cronométrica que proporciona el GPS. Agricultores, topógrafos, geólogos e innumerables usuarios trabajan de forma más eficiente, segura, económica y precisa gracias a las señales accesibles y gratuitas del GPS.
+
+El desarrollo de la API de GPS pretende, en primera instancia, proporcionar datos de geolocalización, previamente solicitados al proveedor de GPS (Mapquest), que faciliten la identificación de características de interés acerca de rutas definidas por el usuario a partir de una ubicación de origen y una ubicación de destino, y al proveedor para datos del clima (WTTR) para la obtención de particularidades del clima de la ubicación de interés . Mediante la indicación de un punto de origen y un punto de destino, la API extrae una serie de atributos en formato .json que permiten identificar la ruta de acceso a las características de interés. La API de GPS facilitará al usuario información sobre la duración del viaje, la distancia en kilómetros desde el punto de origen al punto de destino, la velocidad promedio, la cantidad aproximada de litros de gasolina necesarios para realizar el recorrido, y las indicaciones durante el recorrido, además de la temperatura y la descripción del clima del lugar de destino.
 
 ### Proceso de construcción de la API:
-Selección de las librerías: La librería urllib permite acceder a cualquier recurso alojado en Internet indicado mediante una dirección web. Por su parte, 
-la librería requests facilita el trabajo con peticiones HTTP; particularmente permitirá hacer uso del método GET para extraer información de la URL dada.
 
-IMG
+A continuación se dará una breve descripción del proceso llevado a cabo para el desarrollo de la API. 
+Nota: Para profundizar en este el proceso de construcción con todos sus detalles, archivos y demás, diríjase al código que se encuentra alojado en el repositorio. 
 
 
-Del proveedor de información seleccionado, en este caso, Mapquest (brinda  información GPS sobre rutas específicas, similar a Google Maps), 
-se extrae la dirección URL del recurso y la llave que permite autenticar nuestra aplicación con la API de Mapquest.
+Selección de las librerías: La librería urllib permite acceder a cualquier recurso alojado en Internet indicado mediante una dirección web. Por su parte, la librería requests facilita el trabajo con peticiones HTTP; particularmente permitirá hacer uso del método GET para extraer información de la URL dada.
 
-IMG
+IMG 2
 
-Se define un punto de origen y un punto de destino de la ruta que posteriormente se va a indicar por el usuario para construir la dirección URL 
-con la que se van a obtener todos los datos provenientes de API Mapquest para esos puntos de origen y destino.
 
-IMG
+Del proveedor de información seleccionado, en este caso, Mapquest (brinda  información GPS sobre rutas específicas, similar a Google Maps), se extrae la dirección URL del recurso y la llave que permite autenticar nuestra aplicación con la API de Mapquest.
+
+IMG 3
+
+Se define un punto de origen y un punto de destino de la ruta que posteriormente se va a indicar por el usuario para construir la dirección URL con la que se van a obtener todos los datos provenientes de API Mapquest para esos puntos de origen y destino.
+
+IMG 4
 
 
 Se hace uso del método GET de la librería requests para extraer toda información de Mapquest referente a los datos especificados y se reescriben en formato JSON.
 
-IMG
+IMG 5
 
 Del archivo JSON se obtiene la ruta para determinar el valor de statuscode que indica el éxito de la ejecución de la petición.
 
-Se crea una función que ejecute las acciones requeridas. Dentro de dicha estructura se definen las rutas o direcciones de las características de 
-interés a extraer, como la duración del viaje, la distancia entre las dos ubicaciones seleccionadas y las indicaciones del trayecto para ser visualizadas 
-por el usuario. 
+IMG 6
 
-IMG
+Se crea una función que ejecute las acciones requeridas. Dentro de dicha estructura se definen las rutas o direcciones de las características de interés a extraer, como la duración del viaje, la distancia entre las dos ubicaciones seleccionadas y las indicaciones del trayecto para ser visualizadas por el usuario. 
 
-Se realiza un proceso análogo para solicitar información del proveedor del clima, WTTR. Se extrae la dirección URL del recurso y la llave que permite 
-autenticar nuestra aplicación con la API de WTTR. Se define el punto de destino como la ubicación de interés. Se crea una función que ejecute las acciones 
-requeridas. Dentro de dicha estructura se definen las rutas o direcciones de las características de interés a extraer, como la duración del viaje, la distancia 
-entre las dos ubicaciones seleccionadas y las indicaciones del trayecto para ser visualizadas por el usuario. 
+IMG 7
 
-IMG
+Se realiza un proceso análogo para solicitar información del proveedor del clima, WTTR. Se extrae la dirección URL del recurso y la llave que permite autenticar nuestra aplicación con la API de WTTR. Se define el punto de destino como la ubicación de interés. Se crea una función que ejecute las acciones requeridas. Dentro de dicha estructura se definen las rutas o direcciones de las características de interés a extraer, como la duración del viaje, la distancia entre las dos ubicaciones seleccionadas y las indicaciones del trayecto para ser visualizadas por el usuario. 
+
+IMG 8
+
+Se realiza la creación de la clase Usuario, en ella se declaran los campos necesarios para la identificación del usuario y su información de viaje, estos serán: email, username, puntos de origen y destino. No es necesaria la definición del ID puesto que peewee se encarga de crearlo automáticamente como clave primaria. Posteriormente se añade la clase Meta dentro de la clase Usuario pues esta última será encargada de realizar la conexión a la base de datos.
+
+IMG 9
+
+La clase Resumen_viaje contiene los campos necesarios para la identificación del viaje y la información relevante que se desea obtener de este, estos serán: fecha de servicio, puntos de origen y destino, tiempo de trayecto, distancia recorrida y clima; además, contendrá una clave foránea (user) extraída de la entidad usuario, que indicará a qué usuario corresponde dicha información. Posteriormente se añade la clase Meta dentro de la clase Resumen_viaje pues esta última será encargada de realizar la conexión a la base de datos.
+
+IMG 10
+
+Se genera una instancia de la clase APIRouter con el parámetro prefix que será igual /api/v1. Esto significa que todas las rutas que se creen con dicha instancia tendrán como prefijo esa url. Tags será una lista con un valor llamado users y será de utilidad para agrupar los endpoints. Se indicará que la petición sea de tipo post usando el método post de router y recibirá varios parámetros. Como primer parámetro se tendrá la ruta /api/v1/user/, el segundo parámetro será status_code que es el estado HTTP que queremos devolver en nuestro endpoint, como lo que vamos a hacer es crear un dato, lo modificaremos y usaremos el estado 201. El parámetro response_model indicará que la respuesta que retornaremos será un modelo de Pydantic de tipo User. Se realiza la conexión a la base de datos ya que será necesaria para la creación del usuario. El parámetro summary será informativo para la documentación.
+
+IMG 11
+
+Para la creación del usuario se definirá una función que recibirá una variable llamada user y que será de tipo UserRegister, de modo que la app pueda recibir los datos de interés correspondientes a un usuario en particular, estos serán: username, puntos de origen y destino y retornará esos mismos datos a modo de verificación de recepción de la información.
+
+IMG 12
+
+Se creará un clase UserBase que delimitará las restricciones para los datos username, y puntos de origen y destino, de modo que la aplicación únicamente reciba datos de tipo str en esos campos. En caso de no cumplirse la validación de las restricciones la validación de Pydantic arrojará un error.
+
+IMG 13
+
+Se importan las clases Usuario y Resumen_viaje además del objeto de la base de datos y posteriormente se define una función que se conectará a la base de datos, recibirá una lista de los modelos que queremos convertir en tablas y después cerrará la conexión.
+
+IMG 14
+
+Se realiza la creación de la función create_user; esta función recibe como parámetro un modelo de Pydantic de tipo UserBase. Se encargará particularmente de guardar el usuario en la base de datos. Se comprobará si el usuario ingresado ya existe en la base de datos por email o username, en ese caso, se realizará una excepción HTTPException con el código de estado 400 y en el detalle explicaremos la justificación de dicho error. Finalmente se retorna la información del usuario recién creado empleando el modelo User de Pydantic.
+
+IMG 15
+
+Se realiza la creación de la clase Settings para declarar las variables que guardarán información sobre la conexión y autenticación a la base de datos. Los valores correspondientes a dichas variables se asignan a través de la función GETENV de la librería OS, la cual recibe el nombre asignado a las variables de entorno en el archivo .env; en caso de ser verificada su existencia retornarán su valor, en caso contrario, retornará “None”.
+
+IMG 16
+
+Se instancia la clase Settings para guardar las variables de entorno de la conexión 
+
+IMG 17
+
+Posteriormente, se sobreescribe la clase PeeweeConnectionState. 
+
+IMG 18
+
+Y se efectúa la conexión a la base de datos de PostgreSQL empleando los parámetros de autenticación y conexión. Las funciones reset_db_state y get_db serán necesarias para la realización de la conexión a la base de datos en todo el proyecto.
+
+IMG 19
+
+
 
 
