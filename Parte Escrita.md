@@ -114,68 +114,149 @@ key = "VUMTeSQl2G6JzINKnAuas25bl9dfkzAk"
 
 Se define un punto de origen y un punto de destino de la ruta que posteriormente se va a indicar por el usuario para construir la dirección URL con la que se van a obtener todos los datos provenientes de API Mapquest para esos puntos de origen y destino.
 
-IMG 4
-
+```
+origen = imput("Ingresa el punto de partida de tu viaje: ")
+destino = imput("¿Hacia dónde te diriges?: ")
+url = api_url + urllib.parse.urlencode({"key":key, "from":origen, "to":destino})
+```
 
 Se hace uso del método GET de la librería requests para extraer toda información de Mapquest referente a los datos especificados y se reescriben en formato JSON.
 
-IMG 5
+```
+json_data = requests.get(url).json()
+```
 
 Del archivo JSON se obtiene la ruta para determinar el valor de statuscode que indica el éxito de la ejecución de la petición.
 
-IMG 6
+```
+statuscode = json_data["info"]["satuscode"]
+```
 
 Se crea una función que ejecute las acciones requeridas. Dentro de dicha estructura se definen las rutas o direcciones de las características de interés a extraer, como la duración del viaje, la distancia entre las dos ubicaciones seleccionadas y las indicaciones del trayecto para ser visualizadas por el usuario. 
 
-IMG 7
+```
+def gps(origen, destino):
+    url = api_url + urllib.parse.urlencode({"key":key, "from": origen, "to":destino}) 
+    json_data = requests.get(url).json()
+    duracion_del_viaje = json_data["route"]["formattedTime"]
+    distancia = json_data["route"]["distance"] * 1.61
+    nombre = ["Duración del viaje", "Distacia a Recorrer"]
+    print("Indicaciones del trayecto")
+    for each in json_data["route"]["legs"][0]["maneuvers"]:
+        print(each["narrative"])
+
+    return dict(zip(nombre, [duracion_del_viaje, distancia]))
+```
 
 Se realiza un proceso análogo para solicitar información del proveedor del clima, WTTR. Se extrae la dirección URL del recurso y la llave que permite autenticar nuestra aplicación con la API de WTTR. Se define el punto de destino como la ubicación de interés. Se crea una función que ejecute las acciones requeridas. Dentro de dicha estructura se definen las rutas o direcciones de las características de interés a extraer, como la duración del viaje, la distancia entre las dos ubicaciones seleccionadas y las indicaciones del trayecto para ser visualizadas por el usuario. 
 
-IMG 8
+```
+def clima(destino):
+    """
+    Api que indica el clima de un lugar en específico.
+    En este caso deseamos saber el clima que tiene el luegar de destino al que queremos llegar.
+    """
+    urlclima_o = f"https://es.wttr.in/{destino}?format=j1"
+    #urlclima_d = f"https://es.wttr.in/{destino}?format=j1"
+
+    responseclima_o = requests.get(urlclima_o)
+    #responseclima_d = requests.get(urlclima_d)
+    clima_o = responseclima_o.json()
+    #clima_d = responseclima_d.json()
+
+    temperatura_destino = clima_o["current_condition"][0]["temp_C"]
+    descripcion = clima_o["current_condition"][0]["lang_es"][0]["value"]
+    return temperatura_destino, descripcion
+
+def main(): 
+    temperatura_destino, descripcion = clima(destino)
+    #print(f"La temperatura actual de {destino} es de {temperatura_destino} °C. {descripcion}")
+    return f"La temperatura actual de {destino} es de {temperatura_destino} °C. {descripcion}"
+
+```
 
 Se realiza la creación de la clase Usuario, en ella se declaran los campos necesarios para la identificación del usuario y su información de viaje, estos serán: email, username, puntos de origen y destino. No es necesaria la definición del ID puesto que peewee se encarga de crearlo automáticamente como clave primaria. Posteriormente se añade la clase Meta dentro de la clase Usuario pues esta última será encargada de realizar la conexión a la base de datos.
 
-IMG 9
+```
+class usuario(peewee.Model):
+#    email = peewee.CharField(unique=True, index=True)
+    username = peewee.CharField(unique=True, index=True)
+    punto_salida = peewee.CharField(unique=False, index=True)
+    punto_llegada = peewee.CharField(unique=False, index=True)
+
+    class Meta:
+        database = db
+```
 
 La clase Resumen_viaje contiene los campos necesarios para la identificación del viaje y la información relevante que se desea obtener de este, estos serán: fecha de servicio, puntos de origen y destino, tiempo de trayecto, distancia recorrida y clima; además, contendrá una clave foránea (user) extraída de la entidad usuario, que indicará a qué usuario corresponde dicha información. Posteriormente se añade la clase Meta dentro de la clase Resumen_viaje pues esta última será encargada de realizar la conexión a la base de datos.
 
-IMG 10
+```
+class resumen_viaje(peewee.Model):
+    Fecha_servicio = peewee.DateTimeField(default=datetime.now)
+    Lugar_Salida = peewee.CharField(default=False)
+    Lugar_Destino = peewee.CharField(default=False)
+    Tiempo_trayecto = peewee.CharField(default=False)
+    Distancia_recorrida = peewee.CharField(default=False)
+    Clima = peewee.CharField(default=False)
+    user = peewee.ForeignKeyField(usuario, backref="todos")
+
+    class Meta:
+        database = db
+```
 
 Se genera una instancia de la clase APIRouter con el parámetro prefix que será igual /api/v1. Esto significa que todas las rutas que se creen con dicha instancia tendrán como prefijo esa url. Tags será una lista con un valor llamado users y será de utilidad para agrupar los endpoints. Se indicará que la petición sea de tipo post usando el método post de router y recibirá varios parámetros. Como primer parámetro se tendrá la ruta /api/v1/user/, el segundo parámetro será status_code que es el estado HTTP que queremos devolver en nuestro endpoint, como lo que vamos a hacer es crear un dato, lo modificaremos y usaremos el estado 201. El parámetro response_model indicará que la respuesta que retornaremos será un modelo de Pydantic de tipo User. Se realiza la conexión a la base de datos ya que será necesaria para la creación del usuario. El parámetro summary será informativo para la documentación.
 
-IMG 11
+```
+
+```
 
 Para la creación del usuario se definirá una función que recibirá una variable llamada user y que será de tipo UserRegister, de modo que la app pueda recibir los datos de interés correspondientes a un usuario en particular, estos serán: username, puntos de origen y destino y retornará esos mismos datos a modo de verificación de recepción de la información.
 
-IMG 12
+```
+
+```
 
 Se creará un clase UserBase que delimitará las restricciones para los datos username, y puntos de origen y destino, de modo que la aplicación únicamente reciba datos de tipo str en esos campos. En caso de no cumplirse la validación de las restricciones la validación de Pydantic arrojará un error.
 
-IMG 13
+```
+
+```
 
 Se importan las clases Usuario y Resumen_viaje además del objeto de la base de datos y posteriormente se define una función que se conectará a la base de datos, recibirá una lista de los modelos que queremos convertir en tablas y después cerrará la conexión.
 
-IMG 14
+```
+
+```
 
 Se realiza la creación de la función create_user; esta función recibe como parámetro un modelo de Pydantic de tipo UserBase. Se encargará particularmente de guardar el usuario en la base de datos. Se comprobará si el usuario ingresado ya existe en la base de datos por email o username, en ese caso, se realizará una excepción HTTPException con el código de estado 400 y en el detalle explicaremos la justificación de dicho error. Finalmente se retorna la información del usuario recién creado empleando el modelo User de Pydantic.
 
-IMG 15
+```
+
+```
 
 Se realiza la creación de la clase Settings para declarar las variables que guardarán información sobre la conexión y autenticación a la base de datos. Los valores correspondientes a dichas variables se asignan a través de la función GETENV de la librería OS, la cual recibe el nombre asignado a las variables de entorno en el archivo .env; en caso de ser verificada su existencia retornarán su valor, en caso contrario, retornará “None”.
 
-IMG 16
+```
+
+```
 
 Se instancia la clase Settings para guardar las variables de entorno de la conexión 
 
-IMG 17
+```
+
+```
 
 Posteriormente, se sobreescribe la clase PeeweeConnectionState. 
 
-IMG 18
+```
+
+```
 
 Y se efectúa la conexión a la base de datos de PostgreSQL empleando los parámetros de autenticación y conexión. Las funciones reset_db_state y get_db serán necesarias para la realización de la conexión a la base de datos en todo el proyecto.
 
-IMG 19
+```
+
+```
 
 
 
