@@ -14,11 +14,11 @@ DB_PORT = settings.db_port
 conexion = psycopg2.connect(database="BaseDatos_MapsUdeA", user="postgres", password="1000895134j")
 cur = conexion.cursor()
 cur.execute( "SELECT punto_salida,punto_llegada FROM usuario" )
-query2= cur.fetchall()
+query= cur.fetchall()
 conexion.close()
-print(query2[-1]) #ultimo dato de lainterfaz
-origen = query2[-1][0]   #dato de salida de la interfaz
-destino = query2[-1][1]  #dato de llegada de la interfaz
+print(query[-1]) #ultimo dato de lainterfaz
+origen = query[-1][0]   #dato de salida de la interfaz
+destino = query[-1][1]  #dato de llegada de la interfaz
 print(origen, destino)    
 
 
@@ -75,13 +75,22 @@ def main():
 if __name__ == "__main__":
     main()
 
-conexion1 = psycopg2.connect(database=DB_NAME, user=DB_USER, password= DB_PASS)
-cursor1=conexion1.cursor()
+#conexion1 = psycopg2.connect(database=DB_NAME, user=DB_USER, password= DB_PASS)
+#cursor1=conexion1.cursor()
+#p= main()
+#datos=( origen, destino, a["Duración del viaje"], a["Distacia a Recorrer"], p )
+#sql=f"""insert into resumen_viaje(lugar_salida,lugar_destino,tiempo_trayecto,distancia_recorrida,clima) 
+#values ({datos[0]},{datos[1]},{datos[2]},{datos[3]},{datos[4]})"""
+#cursor1.execute(sql, datos)
+#conexion1.commit()
+#conexion1.close()
 
+#Pendiente que pablito pruebe esto a ver si funciona porque mi pc no sirve
+conexion = psycopg2.connect(database=DB_NAME, user=DB_USER, password= DB_PASS)
+cur = conexion.cursor()
 p= main()
-datos=( origen, destino, a["Duración del viaje"], a["Distacia a Recorrer"], p )
-sql=f"""insert into resumen_viaje(lugar_salida,lugar_destino,tiempo_trayecto,distancia_recorrida,clima) 
-values ({datos[0]},{datos[1]},{datos[2]},{datos[3]},{datos[4]})"""
-cursor1.execute(sql, datos)
-conexion1.commit()
-conexion1.close()
+datos=(origen, destino, a["Duración del viaje"], a["Distacia a Recorrer"], p)
+cur.execute( f"""insert into resumen_viaje(lugar_salida,lugar_destino,tiempo_trayecto,distancia_recorrida,clima) 
+values ({datos[0]},{datos[1]},{datos[2]},{datos[3]},{datos[4]})""")
+#query= cur.fetchall()
+conexion.close()
