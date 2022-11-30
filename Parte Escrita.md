@@ -207,55 +207,136 @@ class resumen_viaje(peewee.Model):
 Se genera una instancia de la clase APIRouter con el parámetro prefix que será igual /api/v1. Esto significa que todas las rutas que se creen con dicha instancia tendrán como prefijo esa url. Tags será una lista con un valor llamado users y será de utilidad para agrupar los endpoints. Se indicará que la petición sea de tipo post usando el método post de router y recibirá varios parámetros. Como primer parámetro se tendrá la ruta /api/v1/user/, el segundo parámetro será status_code que es el estado HTTP que queremos devolver en nuestro endpoint, como lo que vamos a hacer es crear un dato, lo modificaremos y usaremos el estado 201. El parámetro response_model indicará que la respuesta que retornaremos será un modelo de Pydantic de tipo User. Se realiza la conexión a la base de datos ya que será necesaria para la creación del usuario. El parámetro summary será informativo para la documentación.
 
 ```
+router = APIRouter(prefix="/api/v1")
 
+@router.post(
+    "/user/",
+    tags = ["users"],
+    response_model = UserBase,
+    status_code=status.HTTP_201_CREATED,
+    dependencies = [Depends(get_db)],
+    summary = "Nueva Busqueda"
 ```
 
 Para la creación del usuario se definirá una función que recibirá una variable llamada user y que será de tipo UserRegister, de modo que la app pueda recibir los datos de interés correspondientes a un usuario en particular, estos serán: username, puntos de origen y destino y retornará esos mismos datos a modo de verificación de recepción de la información.
 
 ```
-
+def create_user(user: UserBase = Body(...)):
+    User = usuario(
+        username = user.username,  
+        punto_salida = user.punto_de_salida,
+        punto_llegada = user.punto_de_llegada
+        )
+    User.save()
+    return user
 ```
 
 Se creará un clase UserBase que delimitará las restricciones para los datos username, y puntos de origen y destino, de modo que la aplicación únicamente reciba datos de tipo str en esos campos. En caso de no cumplirse la validación de las restricciones la validación de Pydantic arrojará un error.
 
 ```
-
+class UserBase(BaseModel):
+    username: str 
+    punto_de_salida: str 
+    punto_de_llegada: str 
 ```
 
 Se importan las clases Usuario y Resumen_viaje además del objeto de la base de datos y posteriormente se define una función que se conectará a la base de datos, recibirá una lista de los modelos que queremos convertir en tablas y después cerrará la conexión.
 
 ```
+from app.v1.model.user_model import usuario
+from app.v1.model.viaje_model import resumen_viaje
+from app.v1.utils.db import db
 
+def create_tables():
+    """
+    Creación de las tablas donde se almacena la información relevante
+    en donde se resume el viaje y el clima
+    """
+    with db:
+        db.create_tables([usuario, resumen_viaje])
 ```
 
 Se realiza la creación de la función create_user; esta función recibe como parámetro un modelo de Pydantic de tipo UserBase. Se encargará particularmente de guardar el usuario en la base de datos. Se comprobará si el usuario ingresado ya existe en la base de datos por email o username, en ese caso, se realizará una excepción HTTPException con el código de estado 400 y en el detalle explicaremos la justificación de dicho error. Finalmente se retorna la información del usuario recién creado empleando el modelo User de Pydantic.
 
 ```
-
+def create_User(user: UserBase):
+    db_user = usuario(
+        username = user.username,  
+        punto_salida = user.punto_de_salida,
+        punto_llegada = user.punto_de_llegada
+        )
+    db_user.save()
+    return UserBase(
+        username = db_user.username,
+        punto_salida = db_user.punto_salida,
+        punto_llegada = db_user.punto_llegada
+    )
 ```
 
 Se realiza la creación de la clase Settings para declarar las variables que guardarán información sobre la conexión y autenticación a la base de datos. Los valores correspondientes a dichas variables se asignan a través de la función GETENV de la librería OS, la cual recibe el nombre asignado a las variables de entorno en el archivo .env; en caso de ser verificada su existencia retornarán su valor, en caso contrario, retornará “None”.
 
 ```
+class Settings(BaseSettings):
 
+    db_name: str = os.getenv('DB_NAME')
+    db_user: str = os.getenv('DB_USER')
+    db_pass: str = os.getenv('DB_PASS')
+    db_host: str = os.getenv('DB_HOST')
+    db_port: str = os.getenv('DB_PORT')
 ```
 
 Se instancia la clase Settings para guardar las variables de entorno de la conexión 
 
 ```
+from app.v1.utils.settings import Settings
+
+settings = Settings()
+
+DB_NAME = settings.db_name
+DB_USER = settings.db_user
+DB_PASS = settings.db_pass
+DB_HOST = settings.db_host
+DB_PORT = settings.db_port
+
+db_state_default = {"closed": None, "conn": None, "ctx": None, "transactions": None}
+db_state = ContextVar("db_state", default=db_state_default.copy())
 
 ```
 
 Posteriormente, se sobreescribe la clase PeeweeConnectionState. 
 
 ```
+class PeeweeConnectionState(peewee._ConnectionState):
+    def __init__(self, **kwargs):
+        super().__setattr__("_state", db_state)
+        super().__init__(**kwargs)
 
+    def __setattr__(self, name, value):
+        self._state.get()[name] = value
+
+    def __getattr__(self, name):
+        return self._state.get()[name]
 ```
 
 Y se efectúa la conexión a la base de datos de PostgreSQL empleando los parámetros de autenticación y conexión. Las funciones reset_db_state y get_db serán necesarias para la realización de la conexión a la base de datos en todo el proyecto.
 
 ```
+db = peewee.PostgresqlDatabase(DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST, port=DB_PORT)
 
+db._state = PeeweeConnectionState()
+
+async def reset_db_state():
+    db._state._state.set(db_state_default.copy())
+    db._state.reset()
+
+
+def get_db(db_state=Depends(reset_db_state)):
+    try:
+        db.connect()
+        yield
+    finally:
+        if not db.is_closed():
+            db.close()
 ```
 
 
