@@ -4,6 +4,7 @@
 El modelo entidad relación que se maneja en la base de datos es:
 
 IMG del modelo entidad relación.
+Imagen
 
 ## Interpretación del modelo entidad-relación, tablas dominio y tablas de dimensiones.
 
