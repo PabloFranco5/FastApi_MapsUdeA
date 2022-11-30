@@ -81,10 +81,10 @@ las grandes ventajas para este proceso es el cálculo en tiempo real y poder apl
 Tanto en la logística, como en los otros procesos que se pueden optimizar, la API de geolocalización sirve para reducir el 
 tiempo de ejecución y aumentar la rentabilidad de las operaciones.
 
-IMAGEN
+![](https://github.com/PabloFranco5/FastApi_MapsUdeA/blob/main/process.jpeg)
  
 
-# Planteamiento del problema.
+## PLANTEAMIENTO DEL PROBLEMA
 
 El Sistema de Posicionamiento Global (GPS) proporciona servicios fiables de posicionamiento, navegación y cronometría gratuita e ininterrumpidamente a usuarios en todo el mundo. El sistema proporcionará localización y hora exacta en cualquier condición atmosférica, en cualquier lugar del mundo y sin límite al número de usuarios simultáneos. 
 
@@ -100,12 +100,17 @@ Nota: Para profundizar en este el proceso de construcción con todos sus detalle
 
 Selección de las librerías: La librería urllib permite acceder a cualquier recurso alojado en Internet indicado mediante una dirección web. Por su parte, la librería requests facilita el trabajo con peticiones HTTP; particularmente permitirá hacer uso del método GET para extraer información de la URL dada.
 
-IMG 2
-
+```
+import requests 
+import urllib
+```
 
 Del proveedor de información seleccionado, en este caso, Mapquest (brinda  información GPS sobre rutas específicas, similar a Google Maps), se extrae la dirección URL del recurso y la llave que permite autenticar nuestra aplicación con la API de Mapquest.
 
-IMG 3
+```
+api_url = "http://www.mapquestapi.com/directions/v2/route?"
+key = "VUMTeSQl2G6JzINKnAuas25bl9dfkzAk"
+```
 
 Se define un punto de origen y un punto de destino de la ruta que posteriormente se va a indicar por el usuario para construir la dirección URL con la que se van a obtener todos los datos provenientes de API Mapquest para esos puntos de origen y destino.
 
