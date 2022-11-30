@@ -2,7 +2,7 @@
 
 Recordemos que una entidad es un objeto o concepto del mundo real que se define en una base de datos, para este ejemplo práctico las entidades hacen referencia a  clientes, trayectorias y climas. Note que estas entidades se desprenden de la necesidad de responder las preguntas planteadas posteriormente. A continuación se presentará gráficamente el modelo entidad-relación y se realizará su respectiva interpretación.
  
-IMG 1
+![](https://github.com/PabloFranco5/FastApi_MapsUdeA/blob/main/diagram.jpeg)
 
 # TABLA USUARIO: 
 
