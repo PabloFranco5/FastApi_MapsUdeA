@@ -1,14 +1,11 @@
 
-# Explicacion settings.py
+# Explicación settings.py
 
-declaramos la clase Settings que extenderá de BaseSettings y para finalizar declaramos las variables que guardarán la información sobre la conexión y autenticación a la base de datos.
+Se realiza la creación de la clase Settings para declarar las variables que guardarán información sobre la conexión y autenticación a la base de datos. Los valores correspondientes a dichas variables se asignan a través de la función GETENV de la librería OS, la cual recibe el nombre asignado a las variables de entorno en el archivo .env; en caso de ser verificada su existencia retornarán su valor, en caso contrario, retornará “None”.
 
-Los valores los asignamos gracias a la función getenv de la librería os la cual recibe el nombre que les dimos a las variables de entorno en el archivo .env y si existen retornan su valor. Si no es así, devolverá None.
 
-# Explciacion db.py (la conexion a la base de datos)
+# Explciación db.py (la conexion a la base de datos)
 
-Lo que estamos haciendo primero es crear una instancia de clase Settings que creamos unos pasos más atrás y después guardar las variables de entorno de la conexión en constantes.
+Se instancia la clase Settings para guardar las variables de entorno de la conexión. Posteriormente, se sobreescribe la clase PeeweeConnectionState. Finalmente se efectúa la conexión a la base de datos de PostgreSQL empleando los parámetros de autenticación y conexión. Las funciones reset_db_state y get_db serán necesarias para la realización de la conexión a la base de datos en todo el proyecto.
 
-Posteriormente, sobreescribimos la clase PeeweeConnectionState. El siguiente paso es efectuar la conexión a la base de datos de PostgreSQL, aquí es donde empleamos los parámetros de autenticación y conexión.
 
-Por último, las funciones reset_db_state y get_db las utilizaremos para poder utilizar la conexión a la base de datos en todo nuestro proyecto. 

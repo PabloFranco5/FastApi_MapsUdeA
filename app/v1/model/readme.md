@@ -1,14 +1,10 @@
-# Explicacion user_model.py
+# Explicación user_model.py
 
-Esta clase extiende de peewee.Model y en ella declaramos los campos que vamos a necesitar que será un email, username los puntos de partida y llegada del usuario. El id no es necesario definirlo, ya que peewee se encargará de crearlo automáticamente como clave primaria y autoincrement.
-
-Después añadimos la clase Meta dentro de la clase User que contendrá la conexión a la base de datos.
+En este archivo se realiza la creación de la clase Usuario, en ella se declaran los campos necesarios para la identificación del usuario y su información de viaje, estos serán: email, username, puntos de origen y destino. No es necesaria la definición del ID puesto que peewee se encarga de crearlo automáticamente como clave primaria. Posteriormente se añade la clase Meta dentro de la clase Usuario pues esta última será encargada de realizar la conexión a la base de datos.
 
 
 
 
-# Explicacion viaje_model.py 
+# Explicación viaje_model.py 
 
-CAMBIAR EXPLICACION 
-
-En este caso tendremos cuatro columnas (más el id que se genera automáticamente). El campo title será una breve descripción de la tarea a realizar, created_at será la fecha de creación, un booleano llamado is_done para indicar si la tarea ya ha sido realizada o no que por defecto se guardará como false y una clave foránea user para indicar a que usuario corresponde el todo. Esto guardará en la base de datos como un campo llamado user_id.
+En este archivo se realiza la creación de la clase Resumen_viaje, la cual contiene los campos necesarios para la identificación del viaje y la información relevante que se desea obtener de este, estos serán: fecha de servicio, puntos de origen y destino, tiempo de trayecto, distancia recorrida y clima; además, contendrá una clave foránea (user) extraída de la entidad usuario, que indicará a qué usuario corresponde dicha información. Posteriormente se añade la clase Meta dentro de la clase Resumen_viaje pues esta última será encargada de realizar la conexión a la base de datos.
