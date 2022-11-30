@@ -9,17 +9,21 @@ cur = conexion1.cursor()
 cur.execute( "SELECT punto_salida,punto_llegada FROM usuario" )
 query2= cur.fetchall()
 conexion1.close()
-print(query2[-1]) #ultimo dato del interfaz
-origen = query2[-1][0]   #dato de salida del interfaz
-destino = query2[-1][1]  #dato de llegada del interfaz
+print(query2[-1]) #ultimo dato de lainterfaz
+origen = query2[-1][0]   #dato de salida de la interfaz
+destino = query2[-1][1]  #dato de llegada de la interfaz
 print(origen, destino)    
 
 
 api_url = "http://www.mapquestapi.com/directions/v2/route?"
-#el signo de interrogacion significa que vamos a separar la parte de la url con los recursos
 key = "VUMTeSQl2G6JzINKnAuas25bl9dfkzAk"
 
 def gps(origen, destino):
+    """
+    Función que se conecta con la api del clima
+    devuelve un diccionario con la duración del viaje y la distación e
+    imprime las instrucciones que se deben de seguir en automóvil para llegar al destino.
+    """
     url = api_url + urllib.parse.urlencode({"key":key, "from": origen, "to":destino}) 
     json_data = requests.get(url).json()
     duracion_del_viaje = json_data["route"]["formattedTime"]
@@ -38,6 +42,10 @@ if __name__ == "__main__":
     print(a)
 
 def clima(destino):
+    """
+    Api que indica el clima de un lugar en específico.
+    En este caso deseamos saber el clima que tiene el luegar de destino al que queremos llegar.
+    """
     urlclima_o = f"https://es.wttr.in/{destino}?format=j1"
     #urlclima_d = f"https://es.wttr.in/{destino}?format=j1"
 
