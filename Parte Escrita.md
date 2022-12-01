@@ -33,7 +33,7 @@ Estas dos entidades tienen una relación (M/M: muchos a muchos) ya que un trayec
 Estas dos entidades tienen una relación (M/M: muchos a muchos) ya que un usuario puede realizar consultas acerca del clima de diferentes ubicaciones de destino y una descripción del clima tiene la posibilidad de coincidir en las solicitudes de diferentes usuarios.
 
 
-La tabla de dominio es la tabla USUARIO-TRAYECTO (la tabla principal del modelo) y la tabla de dimensión es la tabla CLIMA (se une a la tabla principal a través de FK). (ver imagen adjunta en el documento para comprender la relación).
+La tabla de dominio es la tabla TRAYECTO (la tabla principal del modelo) y las tablas de dimensiones son las tablas CLIMA y tabla de USUARIO(se unen a la tabla principal a través de FK). (ver imagen adjunta en el documento para comprender la relación).
 
 # 2. DIAGRAMA DE PROCESOS 
 
